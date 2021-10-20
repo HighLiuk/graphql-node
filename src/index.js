@@ -6,8 +6,26 @@ const { ApolloServer } = require("apollo-server")
 const typeDefs = `
   type Query {
     info: String!
+    feed: [Link!]!
+  }
+
+  type Link {
+    id: ID!
+    url: String!
+    description: String!
   }
 `
+
+/**
+ * Database
+ */
+const links = [
+  {
+    id: "link-0",
+    url: "www.howtographql.com",
+    description: "Fullstack tutorial for GraphQL",
+  },
+]
 
 /**
  * The resolvers of the root queries
@@ -15,6 +33,13 @@ const typeDefs = `
 const resolvers = {
   Query: {
     info: () => "This is the API of a Hackernews Clone",
+    feed: () => links,
+  },
+  Link: {
+    // these are actually not required, but that's how these works under the hood
+    id: (parent) => parent.id,
+    url: (parent) => parent.url,
+    description: (parent) => parent.description,
   },
 }
 
