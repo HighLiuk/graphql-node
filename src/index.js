@@ -48,6 +48,26 @@ const resolvers = {
       // return data
       return link
     },
+    updateLink: (parent, args) => {
+      const { id, url, description } = args
+
+      const [link] = links.filter((link) => link.id === id)
+
+      if (link) {
+        link.url = url ?? link.url
+        link.description = description ?? link.description
+      }
+
+      return link
+    },
+    deleteLink: (parent, args) => {
+      const { id } = args
+
+      const [link] = links.filter((link) => link.id === id)
+      links = links.filter((link) => link.id !== id)
+
+      return link
+    },
   },
 }
 
