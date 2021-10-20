@@ -1,20 +1,6 @@
+const fs = require("fs")
+const path = require("path")
 const { ApolloServer } = require("apollo-server")
-
-/**
- * The GraphQL Schema
- */
-const typeDefs = `
-  type Query {
-    info: String!
-    feed: [Link!]!
-  }
-
-  type Link {
-    id: ID!
-    url: String!
-    description: String!
-  }
-`
 
 /**
  * Database
@@ -35,16 +21,10 @@ const resolvers = {
     info: () => "This is the API of a Hackernews Clone",
     feed: () => links,
   },
-  Link: {
-    // these are actually not required, but that's how these works under the hood
-    id: (parent) => parent.id,
-    url: (parent) => parent.url,
-    description: (parent) => parent.description,
-  },
 }
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
   resolvers,
 })
 
