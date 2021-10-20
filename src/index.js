@@ -5,7 +5,7 @@ const { ApolloServer } = require("apollo-server")
 /**
  * Database
  */
-const links = [
+let links = [
   {
     id: "link-0",
     url: "www.howtographql.com",
@@ -21,8 +21,29 @@ const resolvers = {
     info: () => "This is the API of a Hackernews Clone",
     feed: () => links,
   },
+  Mutation: {
+    post: (parent, args) => {
+      // get data
+      const { url, description } = args
+
+      // process data
+      const idCount = links.length
+      const link = {
+        id: `link-${idCount}`,
+        url,
+        description,
+      }
+      links.push(link)
+
+      // return data
+      return link
+    },
+  },
 }
 
+/**
+ * Server Configuration
+ */
 const server = new ApolloServer({
   typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
   resolvers,
