@@ -2,39 +2,16 @@ const fs = require("fs")
 const path = require("path")
 const { ApolloServer } = require("apollo-server")
 const { PrismaClient } = require("@prisma/client")
+const Query = require("./resolvers/Query")
+const Mutation = require("./resolvers/Mutation")
 
-/**
- * The resolvers of the root queries
- */
-const resolvers = {
-  Query: {
-    info: () => "This is the API of a Hackernews Clone",
-    feed: (parent, args, { prisma }) => {
-      return prisma.link.findMany()
-    },
-  },
-  Mutation: {
-    post: (parent, args, { prisma }) => {
-      const { url, description } = args
-      return prisma.link.create({
-        data: {
-          url,
-          description,
-        },
-      })
-    },
-  },
-}
+const typeDefs = fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8")
+const prisma = new PrismaClient()
 
-/**
- * Server Configuration
- */
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync(path.join(__dirname, "schema.graphql"), "utf8"),
-  resolvers,
-  context: {
-    prisma: new PrismaClient(),
-  },
+  typeDefs,
+  resolvers: { Query, Mutation },
+  context: { prisma },
 })
 
 server.listen().then(({ url }) => {
