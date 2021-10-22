@@ -20,16 +20,6 @@ const resolvers = {
   Query: {
     info: () => "This is the API of a Hackernews Clone",
     feed: () => links,
-    link: (parent, args) => {
-      // get data
-      const { id } = args
-
-      // process data
-      const [link] = links.filter((link) => link.id === id)
-
-      // return data
-      return link
-    },
   },
   Mutation: {
     post: (parent, args) => {
@@ -46,26 +36,6 @@ const resolvers = {
       links.push(link)
 
       // return data
-      return link
-    },
-    updateLink: (parent, args) => {
-      const { id, url, description } = args
-
-      const [link] = links.filter((link) => link.id === id)
-
-      if (link) {
-        link.url = url ?? link.url
-        link.description = description ?? link.description
-      }
-
-      return link
-    },
-    deleteLink: (parent, args) => {
-      const { id } = args
-
-      const [link] = links.filter((link) => link.id === id)
-      links = links.filter((link) => link.id !== id)
-
       return link
     },
   },
