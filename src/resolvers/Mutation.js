@@ -2,10 +2,10 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const APP_SECRET = "myStrongPassword1234"
 
-function post(_, { url, description }, { prisma }) {
-  // we assume that this is the id of the user who makes this post
-  const userId = 1
-
+// requiring authentication for this mutation.
+// here we assume that we have a userId if and only if
+// we are recognized as the User with id equal to userId
+function post(_, { url, description }, { prisma, userId }) {
   return prisma.link.create({
     data: {
       url,
