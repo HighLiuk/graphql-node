@@ -11,7 +11,11 @@ const prisma = new PrismaClient()
 const server = new ApolloServer({
   typeDefs,
   resolvers: { Query, Mutation },
-  context: { prisma },
+  // another way of defining the context
+  // but this way we can also access the request object
+  context: ({ req }) => {
+    return { ...req, prisma }
+  },
 })
 
 server.listen().then(({ url }) => {
