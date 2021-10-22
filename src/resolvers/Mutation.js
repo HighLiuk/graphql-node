@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs")
-const jwt = require("jsonwebtoken")
-const APP_SECRET = "myStrongPassword1234"
+const { createToken } = require("../utils")
 
 // requiring authentication for this mutation.
 // here we assume that we have a userId if and only if
@@ -25,7 +24,7 @@ async function signup(_, { email, password, name }, { prisma }) {
     },
   })
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+  const token = createToken({ userId: user.id })
 
   return { token, user }
 }
