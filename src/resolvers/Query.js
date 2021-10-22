@@ -2,7 +2,7 @@ function info() {
   return "This is the API of a Hackernews Clone"
 }
 
-function feed(parent, args, { prisma }) {
+function feed(_, __, { prisma }) {
   return prisma.link.findMany()
 }
 

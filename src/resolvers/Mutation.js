@@ -2,8 +2,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const APP_SECRET = "myStrongPassword1234"
 
-function post(parent, args, { prisma }) {
-  const { url, description } = args
+function post(_, { url, description }, { prisma }) {
   return prisma.link.create({
     data: {
       url,
@@ -12,9 +11,7 @@ function post(parent, args, { prisma }) {
   })
 }
 
-async function signup(parent, args, { prisma }) {
-  const { email, password, name } = args
-
+async function signup(_, { email, password, name }, { prisma }) {
   const hashedPassword = await bcrypt.hash(password, 10)
   const user = await prisma.user.create({
     data: {
