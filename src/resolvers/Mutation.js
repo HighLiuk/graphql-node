@@ -29,7 +29,35 @@ async function signup(_, { email, password, name }, { prisma }) {
   return { token, user }
 }
 
+async function login(_, { email, password }, { prisma }) {
+  // cerco l'utente nel DB mediante la email
+  const user = await prisma.user.findUnique({
+    where: { email },
+  })
+
+  // se non lo trovo => errore
+  if (!user) {
+    throw new Error("No such user found")
+  }
+
+  // se lo trovo, controllo con bcrypt se gli hash
+  // delle password coincidono
+  const isValid = await bcrypt.compare(password, user.password)
+
+  // se non coincidono => errore
+  if (!isValid) {
+    throw new Error("Invalid password")
+  }
+
+  // se coincidono, rilascio un jwt
+  const token = createToken({ userId: user.id })
+
+  // ritorno l'AuthPayload
+  return { token, user }
+}
+
 module.exports = {
   post,
   signup,
+  login,
 }
