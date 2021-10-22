@@ -8,8 +8,8 @@ generator client {
 }
 
 model Link {
-  id Int @id @default(autoincrement())
-  url String
+  id          Int      @id @default(autoincrement())
+  url         String
   description String
-  createdAt DateTime @default(now())
+  createdAt   DateTime @default(now())
 }
