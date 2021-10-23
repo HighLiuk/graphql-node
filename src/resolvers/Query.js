@@ -12,7 +12,10 @@ function feed(_, { filter, take, skip, orderBy }, { prisma }) {
       }
     : {}
 
-  return prisma.link.findMany({ where, take, skip, orderBy })
+  const links = prisma.link.findMany({ where, take, skip, orderBy })
+  const count = prisma.link.count({ where })
+
+  return { links, count }
 }
 
 module.exports = {

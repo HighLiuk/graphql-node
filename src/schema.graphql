@@ -1,11 +1,6 @@
 type Query {
   info: String!
-  feed(
-    filter: String
-    take: Int
-    skip: Int
-    orderBy: LinkOrderByInput
-  ): [Link!]!
+  feed(filter: String, take: Int, skip: Int, orderBy: LinkOrderByInput): Feed!
 }
 
 type Mutation {
@@ -19,6 +14,11 @@ type Link {
   url: String!
   description: String!
   postedBy: User
+}
+
+type Feed {
+  links: [Link!]!
+  count: Int!
 }
 
 input LinkOrderByInput {
