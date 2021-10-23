@@ -2,7 +2,7 @@ function info() {
   return "This is the API of a Hackernews Clone"
 }
 
-function feed(_, { filter }, { prisma }) {
+function feed(_, { filter, take, skip }, { prisma }) {
   const where = filter
     ? {
         OR: [
@@ -12,7 +12,7 @@ function feed(_, { filter }, { prisma }) {
       }
     : {}
 
-  return prisma.link.findMany({ where })
+  return prisma.link.findMany({ where, take, skip })
 }
 
 module.exports = {
